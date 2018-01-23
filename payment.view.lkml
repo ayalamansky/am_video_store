@@ -61,4 +61,10 @@ view: payment {
     type: count
     drill_fields: [payment_id, rental.rental_id, customer.customer_id, customer.last_name, customer.first_name]
   }
+
+  measure: total_revenue {
+    type: sum
+    sql: ${amount} ;;
+    value_format_name: usd
+  }
 }
