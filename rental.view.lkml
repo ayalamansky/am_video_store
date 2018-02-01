@@ -75,11 +75,6 @@ view: rental {
     sql: ${TABLE}.staff_id ;;
   }
 
-  dimension: total_inventory {
-    type: number
-    sql: (select count(distinct inventory_id) from rental) ;;
-  }
-
   measure: count {
     type: count
     drill_fields: [rental_id, customer.customer_id, customer.last_name, customer.first_name, payment.count]

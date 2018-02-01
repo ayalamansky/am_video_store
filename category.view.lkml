@@ -23,7 +23,8 @@ view: category {
     sql: ${TABLE}.last_update ;;
   }
 
-  dimension: category_name {
+  dimension: name {
+    label: "Category Name"
     type: string
     sql: ${TABLE}.name ;;
   }

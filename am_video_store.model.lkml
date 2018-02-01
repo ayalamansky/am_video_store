@@ -52,6 +52,7 @@ explore: rental {
 }
 
 explore: inventory_history {
+  always_join: [rental,inventory,film,film_category,category]
   join: rental {
     relationship: many_to_one
     sql_on: ${inventory_history.rental_id} = ${rental.rental_id} ;;

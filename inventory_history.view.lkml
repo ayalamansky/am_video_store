@@ -63,7 +63,32 @@ view: inventory_history {
     sql: ${TABLE}.return_date ;;
   }
 
-  measure: count {
-    type: count
+  dimension: total_inventory {
+    type: number
+    sql: (select count(distinct inventory_id) from rental)
+    ) ;;
   }
+
+  filter: title_filter {
+    type: string
+    suggest_dimension: film.title
+  }
+
+  filter: category_filter {
+    type: string
+    suggest_dimension: category.name
+  }
+
+  measure: count {
+    type: sum
+    sql:
+    CASE
+      WHEN {% condition title_filter %} film.title {% endcondition %}
+      AND {% condition category_filter %} category.name {% endcondition %}
+      THEN 1
+      ELSE 0
+    END
+  ;;
+  }
+
 }
