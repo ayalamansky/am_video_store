@@ -76,8 +76,7 @@ view: rental {
   }
 
   measure: count {
-    type: count_distinct
-    sql: ${inventory_id} ;;
+    type: count
     drill_fields: [rental_id, customer.customer_id, customer.last_name, customer.first_name, payment.count]
   }
 }
