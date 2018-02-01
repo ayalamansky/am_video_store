@@ -47,6 +47,7 @@ view: customer {
   }
 
   dimension_group: last_update {
+    hidden: yes
     type: time
     timeframes: [
       raw,

@@ -58,6 +58,7 @@ explore: inventory_history {
     sql_on: ${inventory_history.rental_id} = ${rental.rental_id} ;;
   }
   join: inventory {
+    view_label: "Inventory History"
     relationship: many_to_one
     sql_on: ${rental.inventory_id} = ${inventory.inventory_id} ;;
   }
