@@ -27,4 +27,51 @@ explore: rental {
     relationship: one_to_one
     sql_on: ${rental.rental_id} = ${payment.rental_id} ;;
   }
+  join: customer_facts {
+    relationship: many_to_one
+    sql_on: ${rental.customer_id} = ${customer_facts.customer_id} ;;
+  }
+  join: inventory {
+    relationship: many_to_one
+    sql_on: ${rental.inventory_id} = ${inventory.inventory_id} ;;
+  }
+  join: film {
+    relationship: many_to_one
+    sql_on: ${inventory.film_id} = ${film.film_id} ;;
+  }
+  join: film_category {
+    view_label: "Film"
+    relationship: one_to_one
+    sql_on: ${film.film_id} = ${film_category.film_id} ;;
+  }
+  join: category {
+    view_label: "Film"
+    relationship: many_to_one
+    sql_on: ${film_category.category_id} = ${category.category_id} ;;
+  }
+}
+
+explore: inventory_history {
+  join: rental {
+    relationship: many_to_one
+    sql_on: ${inventory_history.rental_id} = ${rental.rental_id} ;;
+  }
+  join: inventory {
+    relationship: many_to_one
+    sql_on: ${rental.inventory_id} = ${inventory.inventory_id} ;;
+  }
+  join: film {
+    relationship: many_to_one
+    sql_on: ${inventory.film_id} = ${film.film_id} ;;
+  }
+  join: film_category {
+    view_label: "Film"
+    relationship: one_to_one
+    sql_on: ${film.film_id} = ${film_category.film_id} ;;
+  }
+  join: category {
+    view_label: "Film"
+    relationship: many_to_one
+    sql_on: ${film_category.category_id} = ${category.category_id} ;;
+  }
 }
