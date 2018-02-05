@@ -18,7 +18,8 @@ view: inventory_history {
       week,
       month,
       quarter,
-      year
+      year,
+      day_of_week
     ]
     sql: ${TABLE}.inventory_date ;;
   }

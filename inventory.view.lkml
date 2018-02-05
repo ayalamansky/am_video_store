@@ -33,8 +33,4 @@ view: inventory {
     sql: ${TABLE}.store_id ;;
   }
 
-  measure: count {
-    type: count
-    drill_fields: [inventory_id, film.film_id]
-  }
 }
