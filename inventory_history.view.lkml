@@ -69,4 +69,5 @@ view: inventory_history {
     sql: ${rental.inventory_id} ;;
     drill_fields: [rental_id, customer.customer_id, customer.last_name, customer.first_name, payment.count]
   }
+
 }
