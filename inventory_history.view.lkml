@@ -1,7 +1,7 @@
 view: inventory_history {
   derived_table: {
     sql: select rental_id, rental_date, return_date,
-          DATE_ADD(rental_date, INTERVAL rank-1 DAY) as inventory_date
+          date(DATE_ADD(rental_date, INTERVAL rank-1 DAY)) as inventory_date, rank
           from rental
           JOIN ${numbers_table.SQL_TABLE_NAME} nums
           ON nums.rank <= datediff(return_date, rental_date)+1;;
@@ -9,18 +9,8 @@ view: inventory_history {
     indexes: ["inventory_date"]
   }
 
-  dimension_group: inventory {
-    type: time
-    timeframes: [
-      raw,
-      time,
-      date,
-      week,
-      month,
-      quarter,
-      year,
-      day_of_week
-    ]
+  dimension: inventory_date {
+    type: date
     sql: ${TABLE}.inventory_date ;;
   }
 
@@ -33,7 +23,7 @@ view: inventory_history {
     primary_key: yes
     hidden: yes
     type: string
-    sql: concat(${inventory_raw},${rental_id}) ;;
+    sql: concat(${inventory_date},${rental_id}) ;;
   }
 
   dimension_group: rental {
