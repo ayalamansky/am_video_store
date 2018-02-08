@@ -1,7 +1,7 @@
 view: inventory_analysis {
   derived_table: {
     sql: select ids.inventory_id as inventory_id, dates.inventory_date as inventory_date,
-          inv.rental_date, inv.return_date from
+          inv.rental_date, inv.return_date, inv.rental_id from
           (select distinct inventory_id from ${inventory_history.SQL_TABLE_NAME}) ids
           cross join
           (select distinct inventory_date from ${inventory_history.SQL_TABLE_NAME}) dates
@@ -28,6 +28,11 @@ view: inventory_analysis {
     hidden: yes
     type: string
     sql: concat(${inventory_date},${inventory_id}) ;;
+  }
+
+  dimension: rental_id {
+    type: number
+    sql: ${TABLE}.rental_id ;;
   }
 
   dimension_group: rental {

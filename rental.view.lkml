@@ -42,7 +42,8 @@ view: rental {
       week,
       month,
       quarter,
-      year
+      year,
+      month_name
     ]
     sql: ${TABLE}.rental_date ;;
   }

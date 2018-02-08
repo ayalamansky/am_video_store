@@ -1,6 +1,6 @@
 view: inventory_history {
   derived_table: {
-    sql: select inventory_id, rental_date, return_date,
+    sql: select inventory_id, rental_id, rental_date, return_date,
           date(DATE_ADD(rental_date, INTERVAL rank-1 DAY)) as inventory_date, rank
           from rental
           JOIN
@@ -27,6 +27,11 @@ view: inventory_history {
     hidden: yes
     type: string
     sql: concat(${inventory_date},${inventory_id}) ;;
+  }
+
+  dimension: rental_id {
+    type: number
+    sql: ${TABLE}.rental_id ;;
   }
 
   dimension_group: rental {
