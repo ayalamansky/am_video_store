@@ -13,8 +13,9 @@ view: inventory_analysis {
     indexes: ["inventory_date"]
   }
 
-  dimension: inventory_date {
-    type: date
+  dimension_group: inventory {
+    type: time
+    timeframes: [date, day_of_week, month, month_name, quarter, quarter_of_year, year, raw]
     sql: ${TABLE}.inventory_date ;;
   }
 
@@ -78,8 +79,10 @@ view: inventory_analysis {
   }
 
   measure: total_count {
-    type: count
+    type: count_distinct
+    sql: ${inventory_id} ;;
   }
+
 
   measure: rentals_ratio {
     type: number
