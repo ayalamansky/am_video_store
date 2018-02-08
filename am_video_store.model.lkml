@@ -52,8 +52,27 @@ explore: rental {
 }
 
 explore: inventory_analysis {
-  fields: [ALL_FIELDS*, -inventory.inventory_id]
+  fields: [ALL_FIELDS*, -inventory.inventory_id, -customer_facts.customer_id,
+    -customer_facts.count, -payment.customer_id]
+  join: rental {
+    relationship: many_to_one
+    sql_on: ${inventory_analysis.rental_id} = ${rental.rental_id} ;;
+  }
+  join: customer {
+    relationship: many_to_one
+    sql_on: ${rental.customer_id} = ${customer.customer_id} ;;
+  }
+  join: payment {
+    relationship: one_to_one
+    sql_on: ${rental.rental_id} = ${payment.rental_id} ;;
+  }
+  join: customer_facts {
+    view_label: "Customer"
+    relationship: many_to_one
+    sql_on: ${rental.customer_id} = ${customer_facts.customer_id} ;;
+  }
   join: inventory {
+    view_label: "Inventory"
     relationship: many_to_one
     sql_on: ${inventory_analysis.inventory_id} = ${inventory.inventory_id} ;;
   }

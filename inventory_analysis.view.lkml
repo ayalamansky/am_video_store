@@ -69,7 +69,8 @@ view: inventory_analysis {
   }
 
   measure: rental_count {
-    type: count
+    type: count_distinct
+    sql: ${inventory_id} ;;
     filters: {
       field: is_rented
       value: "Yes"
