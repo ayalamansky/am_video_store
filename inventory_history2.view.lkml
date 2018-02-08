@@ -24,12 +24,10 @@ view: inventory_history2 {
       WHERE {% condition title_filter %} film.title {% endcondition %}
       AND {% condition category_filter %} category.name {% endcondition %}
       GROUP BY 1;;
-    sql_trigger_value: select max(rental_id) from rental;;
-    indexes: ["inventory_date"]
   }
-  dimension: inventory_date {
-    type: date
-    primary_key: yes
+  dimension_group: inventory {
+    type: time
+    timeframes: [date,month,year]
     sql: ${TABLE}.inventory_date ;;
   }
   dimension: rentals_count {
@@ -41,23 +39,28 @@ view: inventory_history2 {
     sql: ${TABLE}.rentals_ratio ;;
     value_format_name: percent_2
   }
+
   filter: title_filter {
+    description: "Select one title to filter on"
     type: string
     suggest_explore: rental
     suggest_dimension: film.title
   }
 
   filter: category_filter {
+    description: "or select one category to filter on"
     type: string
     suggest_explore: rental
     suggest_dimension: category.name
   }
-  measure: aveage_rentals_count {
+
+  measure: average_rentals_count {
     type: average
     sql: ${rentals_count} ;;
     value_format_name:decimal_2
   }
-  measure: aveage_rentals_ratio {
+
+  measure: average_rentals_ratio {
     type: average
     sql: ${rentals_ratio} ;;
     value_format_name:percent_2

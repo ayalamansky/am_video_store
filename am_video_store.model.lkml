@@ -51,31 +51,24 @@ explore: rental {
   }
 }
 
-explore: inventory_history {
-   always_join: [rental,inventory,film,film_category,category]
-   join: rental {
-     relationship: many_to_one
-     sql_on: ${inventory_history.rental_id} = ${rental.rental_id} ;;
-   }
-   join: inventory {
-     view_label: "Inventory History"
-     relationship: many_to_one
-     sql_on: ${rental.inventory_id} = ${inventory.inventory_id} ;;
-   }
-   join: film {
-     relationship: many_to_one
-     sql_on: ${inventory.film_id} = ${film.film_id} ;;
-   }
-   join: film_category {
-     view_label: "Film"
-     relationship: one_to_one
-     sql_on: ${film.film_id} = ${film_category.film_id} ;;
-   }
-   join: category {
-     view_label: "Film"
-     relationship: many_to_one
-     sql_on: ${film_category.category_id} = ${category.category_id} ;;
-   }
+explore: inventory_analysis {
+  fields: [ALL_FIELDS*, -inventory.inventory_id]
+  join: inventory {
+    relationship: many_to_one
+    sql_on: ${inventory_analysis.inventory_id} = ${inventory.inventory_id} ;;
+  }
+  join: film {
+    relationship: many_to_one
+    sql_on: ${inventory.film_id} = ${film.film_id} ;;
+  }
+  join: film_category {
+    view_label: "Film"
+    relationship: one_to_one
+    sql_on: ${film.film_id} = ${film_category.film_id} ;;
+  }
+  join: category {
+    view_label: "Film"
+    relationship: many_to_one
+    sql_on: ${film_category.category_id} = ${category.category_id} ;;
+  }
 }
-
-explore: inventory_history2 {}

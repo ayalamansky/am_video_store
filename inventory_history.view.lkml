@@ -1,10 +1,13 @@
 view: inventory_history {
   derived_table: {
-    sql: select rental_id, rental_date, return_date,
+    sql: select inventory_id, rental_date, return_date,
           date(DATE_ADD(rental_date, INTERVAL rank-1 DAY)) as inventory_date, rank
           from rental
-          JOIN ${numbers_table.SQL_TABLE_NAME} nums
-          ON nums.rank <= datediff(return_date, rental_date)+1;;
+          JOIN
+          (SELECT @rank:=@rank+1 AS rank
+          FROM rental, (select @rank:=0) b limit 100) nums
+          ON nums.rank <= datediff(return_date, rental_date)+1
+          ;;
     sql_trigger_value: select max(rental_id) from rental;;
     indexes: ["inventory_date"]
   }
@@ -14,16 +17,16 @@ view: inventory_history {
     sql: ${TABLE}.inventory_date ;;
   }
 
-  dimension: rental_id {
+  dimension: inventory_id {
     type: number
-    sql: ${TABLE}.rental_id ;;
+    sql: ${TABLE}.inventory_id ;;
   }
 
   dimension: unique_key {
     primary_key: yes
     hidden: yes
     type: string
-    sql: concat(${inventory_date},${rental_id}) ;;
+    sql: concat(${inventory_date},${inventory_id}) ;;
   }
 
   dimension_group: rental {
@@ -53,11 +56,4 @@ view: inventory_history {
     ]
     sql: ${TABLE}.return_date ;;
   }
-
-  measure: count {
-    type: count_distinct
-    sql: ${rental.inventory_id} ;;
-    drill_fields: [rental_id, customer.customer_id, customer.last_name, customer.first_name, payment.count]
-  }
-
 }
