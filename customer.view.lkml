@@ -5,6 +5,10 @@ view: customer {
     primary_key: yes
     type: number
     sql: ${TABLE}.customer_id ;;
+    link: {
+      label: "Customer Dashboard"
+      url: "https://sandboxcl.dev.looker.com/dashboards/463?Customer%20ID={{ _filters['customer.customer_id'] | url_encode }}"
+    }
   }
 
   dimension: active {
