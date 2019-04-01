@@ -1,8 +1,11 @@
 connection: "video_store"
 
 include: "*.view.lkml"         # include all views in this project
-include: "*.dashboard.lookml"  # include all dashboards in this project
+# include: "*.dashboard.lookml"  # include all dashboards in this project
 
+datagroup: 5_min {
+  sql_trigger: select date_trunc('min', current_timestamp) ;;
+}
 # # Select the views that should be a part of this model,
 # # and define the joins that connect them together.
 #
@@ -19,6 +22,7 @@ include: "*.dashboard.lookml"  # include all dashboards in this project
 # }
 
 explore: rental {
+  persist_with: 5_min
   join: customer {
     relationship: many_to_one
     sql_on: ${rental.customer_id} = ${customer.customer_id} ;;
